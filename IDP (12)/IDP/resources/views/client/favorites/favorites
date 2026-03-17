@@ -1,0 +1,71 @@
+@extends('layouts.app')
+
+@section('title','Saved Designers')
+
+@section('content')
+
+<div class="max-w-6xl mx-auto px-6 py-12">
+
+<h1 class="text-2xl font-bold mb-8">
+❤️ Saved Designers
+</h1>
+
+@if($designers->count())
+
+<div class="grid md:grid-cols-3 gap-6">
+
+@foreach($designers as $designer)
+
+<div class="border rounded-xl p-6 bg-white shadow-sm">
+
+<a href="{{ route('public.designers.show',$designer) }}">
+
+<h3 class="font-semibold text-lg">
+{{ $designer->name }}
+</h3>
+
+<p class="text-sm text-gray-500 mt-1">
+{{ $designer->specialization ?? 'Interior Designer' }}
+</p>
+
+@if($designer->received_reviews_avg_rating)
+<p class="text-yellow-500 mt-2">
+⭐ {{ number_format($designer->received_reviews_avg_rating,1) }}
+</p>
+@endif
+
+<p class="text-xs text-gray-400 mt-1">
+{{ $designer->completed_projects_count }} completed projects
+</p>
+
+</a>
+
+<form method="POST"
+action="{{ route('public.designers.favorite',$designer) }}"
+class="mt-4">
+@csrf
+
+<button
+class="text-red-600 text-sm hover:underline">
+Remove Favorite
+</button>
+
+</form>
+
+</div>
+
+@endforeach
+
+</div>
+
+@else
+
+<p class="text-gray-500">
+You have not saved any designers yet.
+</p>
+
+@endif
+
+</div>
+
+@endsection
